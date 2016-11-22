@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<script src="jquery.js"></script>
+<script src="color.js"></script>
+<link rel="stylesheet" type="text/css" href="index.css">
+
+</head>
+<body>
+
+<input class="color" id="r1" value="#000000" />
+<input class="color" id="r2" value="#000000" />
+<input class="color" id="r3" value="#000000" />
+<script type="text/javascript">
+    var update_color = function(ev) {
+        if (ev.text) {
+            $.get('/color/'+ $(ev).attr('id') +'/' + ev.text.substr(1) + '/255');
+        }
+    };
+    $('.color').colorPicker({ renderCallback: update_color }); // that's it
+</script>
+
+
+</body>
+</html>
