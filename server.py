@@ -22,19 +22,6 @@ app = Flask(__name__)
 def mainpage():
     return render_template('index.html')
 
-@app.route('/jquery.js')
-def jquery():
-    return render_template('jquery-3.1.1.min.js')
-
-@app.route('/color.js')
-def colorjs():
-    return render_template('jqColorPicker.min.js')
-
-@app.route('/index.css')
-def css():
-    return render_template('index.css')
-
-
 def hex_to_int(h):
     return (int(h[0:2], 16),
         int(h[2:4], 16),
