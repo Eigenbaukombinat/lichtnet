@@ -8,16 +8,32 @@
 </head>
 <body>
 
-<input class="color" id="r1" value="#000000" />
-<input class="color" id="r2" value="#000000" />
-<input class="color" id="r3" value="#000000" />
+
+<div class="color" id="r1" value="#000000"></div>
+
+<div class="color" id="r2" value="#000000"></div>
+<div class="color" id="r3" value="#000000"></div>
 <script type="text/javascript">
     var update_color = function(ev) {
         if (ev.text) {
             $.get('/color/'+ $(ev).attr('id') +'/' + ev.text.substr(1) + '/255');
         }
     };
-    $('.color').colorPicker({ renderCallback: update_color }); // that's it
+    var update_position = function($elm) {
+    		    var $UI = this.$UI, // this is the instance; this.$UI is the colorPicker DOMElement
+        position = $elm.offset(), // $elm is the current trigger that opened the UI
+        gap = this.color.options.gap, // this.color.options stores all options
+        top = 0,
+        left = 0;
+
+    $UI.appendTo($elm);
+    // do here your calculations with top and left and then...
+    return { // the object will be used as in $('.something').css({...});
+        left: left,
+        top: top
+    }
+    }
+    $('.color').colorPicker({ renderCallback: update_color, preventFocus: true, opacity: false, scrollResize: false, positionCallback: update_position }); // that's it
 </script>
 
 
