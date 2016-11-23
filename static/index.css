@@ -1,20 +1,18 @@
 div.color {
 	border:1px solid #000;
-	width: 15rem;
+	width: 240px;
 	font-size: 18px;
-	height: 15rem;
-	border-radius:7.5rem;
+	height: 240px;
+	border-radius:120px;
 	background-color: #000;
+    margin:20px;
 }
 
-input:active, input:focus {
-	border:none;
-}
 
 .cp-color-picker {
 	position:relative !important;
-	top: 3rem !important;
-	margin-left: 2rem;
-	margin-right: 2rem;
+	top: 50px !important;
+	margin-left: 30px;
+	margin-right: 30px;
 	background-color: transparent !important;
 }
