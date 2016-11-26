@@ -2,21 +2,41 @@ import logging
 from flask import Flask, render_template
 import dmxmodel
 
+class ReverseProxied(object):
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
+        if script_name:
+            environ['SCRIPT_NAME'] = script_name
+            path_info = environ['PATH_INFO']
+            if path_info.startswith(script_name):
+                environ['PATH_INFO'] = path_info[len(script_name):]
+
+        scheme = environ.get('HTTP_X_SCHEME', '')
+        if scheme:
+            environ['wsgi.url_scheme'] = scheme
+        return self.app(environ, start_response)
+
 
 log = logging.getLogger('DMXWeb')
 
 
 controller = dmxmodel.Controller()
 
-controller.add_fixture('RGB1', 'rgb', 0, '10.110.115.10')
-controller.add_fixture('RGB2', 'rgb', 4, '10.110.115.10')
-controller.add_fixture('RGB3', 'rgb', 8, '10.110.115.10')
+controller.add_fixture('RGB1', 'rgb', 0, '192.168.21.118')
+controller.add_fixture('RGB2', 'rgb', 4, '192.168.21.118')
+controller.add_fixture('RGB3', 'rgb', 8, '192.168.21.118')
 
 fixtures = {'r1': controller.get_fixture('RGB1'),
     'r2': controller.get_fixture('RGB2'),
     'r3': controller.get_fixture('RGB3')}
 
 app = Flask(__name__)
+
+app.wsgi_app = ReverseProxied(app.wsgi_app)
+
 
 @app.route('/')
 def mainpage():
