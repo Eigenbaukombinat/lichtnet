@@ -43,6 +43,13 @@ class Fixture(object):
             channel.set_channel_id(channel.channel_id + base_channel)
 
 
+class SingleLedFixture(Fixture):
+    def __init__(self):
+        self.num_channels = 1
+        self.address = '255.255.255.255'
+        self.channels = {'p': Channel(0, 'Value')}
+
+
 class RGBFixture(Fixture):
 
     def __init__(self):
@@ -97,7 +104,7 @@ class Universe(object):
         data = self.artnet.encode_channels(*zip(range(len(self.data)), self.data))
         self.artnet.sendArtDMX(self.address, data)
 
-FIXTURES = {'rgb': RGBFixture}
+FIXTURES = {'rgb': RGBFixture, 'single': SingleLedFixture}
 
 class Controller(object):
     universes = {}
