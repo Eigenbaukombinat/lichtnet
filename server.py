@@ -33,6 +33,9 @@ fixtures = {'r1': controller.get_fixture('RGB1'),
     'r2': controller.get_fixture('RGB2'),
     'r3': controller.get_fixture('RGB3')}
 
+last_colors = dict(r1=('000000', 0), r2=('000000',0), r3=('000000',0))
+
+
 app = Flask(__name__)
 
 app.wsgi_app = ReverseProxied(app.wsgi_app)
@@ -50,8 +53,16 @@ def hex_to_int(h):
 @app.route('/color/<fixture>/<color>/<brightness>')
 def color(fixture, color, brightness):
     fix = fixtures[fixture]
+    last_colors[fixture] = (color, brightness)
     fix.set_color(*hex_to_int(color))
     fix.set_main_brightness(int(brightness))
     controller.send_update()
     return 'OK'
 
+@app.route('/lastcolor')
+def lastcolor():
+    print("RESTORE LAST")
+    print(last_colors)
+    for fix in ('r1', 'r2', 'r3'):
+        color(fix, last_colors[fix][0], last_colors[fix][1]) 
+    return 'OK'
