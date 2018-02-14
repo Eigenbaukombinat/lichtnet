@@ -30,7 +30,7 @@
 <script type="text/javascript">
     var update_color = function(ev) {
         if (ev.text) {
-            $.get('/color/'+ $(ev).attr('id') +'/' + ev.text.substr(1) + '/255');
+            $.get('/licht/color/'+ $(ev).attr('id') +'/' + ev.text.substr(1) + '/255');
         }
     };
     var update_position = function($elm) {
